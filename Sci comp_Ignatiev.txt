@@ -1,0 +1,167 @@
+Exercise: Compute the truth table for NOT:
+X | NOT X
+--|-------
+0 |   1
+1 |   0
+
+
+Exercise: Compute the truth table table for AND
+X | Y | X AND Y
+--|---|--------
+0 | 0 |   0
+1 | 0 |   0
+0 | 1 |   0
+1 | 1 |   1
+
+
+Exercise: Compute the truth table for exclusive-or, defined by the formula:
+XOR(X, Y) = (X OR Y) AND NOT (X AND Y)
+X | Y | X XOR Y
+--|---|--------
+0 | 0 |   0
+1 | 0 |   1
+0 | 1 |   1
+1 | 1 |   0
+
+
+Exercise: Prove De Morgan's theorem, NOT(X OR Y) = NOT(X) AND NOT(Y), by completing the table and checking the last two columns are the same.
+X | Y | NOT(X OR Y) | NOT(X) AND NOT(Y)
+--|---|-------------|-------------------
+0 | 0 |      1      |        1
+1 | 0 |      0      |        0
+0 | 1 |      0      |        0
+1 | 1 |      0      |        0
+
+
+Exercise: using truth tables, check these three equations
+NOT(X) = NAND(1, X)
+AND(X, Y) = NOT(NAND(X, Y))
+ OR(X, Y) = NAND(NOT(X), NOT(Y)))
+
+X | 1 | X AND Y | NOT X |
+--|---|---------|-------|
+0 | 1 |    1    |   1   |
+1 | 1 |    0    |   0   |
+
+X | Y |   X AND Y   |   NOT(NAND(X, Y))
+--|---|-------------|-------------------
+0 | 0 |      0      |        0
+1 | 0 |      0      |        0
+0 | 1 |      0      |        0
+1 | 1 |      1      |        1
+
+X | Y |    X OR Y   |NAND(NOT(X), NOT(Y)))
+--|---|-------------|-------------------
+0 | 0 |      0      |        0
+1 | 0 |      1      |        1
+0 | 1 |      1      |        1
+1 | 1 |      1      |        1
+
+
+Exercise: write similar formulas expressing NOT, AND, and OR in terms of NOR
+NOT(X) = NOR(X, 1)
+AND(X, Y) = NOR(NOT(X), NOT(Y))
+OR(X, Y) = NOT(NOR(X, Y))
+
+
+Exercise: why NOT and OR can't be expressed in terms of AND? Explain.
+NOT can't be expressed as AND(0, X), since AND operator maps two zeros (or "false" boolean values) to zero.
+For any other definition of NOT using AND one would need to use the NOT operator itself.
+Likewise, to describe OR in terms of AND without the use of NAND all three "true" options should be covered. This cannot be achieved without the OR operator itself. 
+
+
+Exercise: Without listing explicitly, how many possible 8-bit binary numbers are there?
+2^8 = 256
+
+
+Exercise: Convert X = 110 to decimal.
+6
+
+Exercise: Convert 11 to binary
+1011
+
+Exercise: Convert these powers of 2 into binary: 2, 4, 8, 16, 32. What do you notice?
+10, 100, 1000, 10000, 100000
+the number of zero bits corresponds to the power of two, the last bit always being a zero.
+
+Exercise: Convert these numbers into binary: 1, 3, 7, 15, 31 (they are all 2^n - 1 for some n). What do you notice?
+1, 11, 111, 1111, 11111
+The number of one-bits in the sequence always equals n.
+
+Exercise: check that these numbers all have the same 3-bit representation: 3 = 11 = 17, 0 = 8 = 16, 2 = 10 = 18.
+3	011
+11	1-011
+17	10-001 #not equal to previous
+0	000
+8	1-000
+16	10-000
+2	010
+10	1-010
+18	10-010
+
+Exercise: complete the table by converting 2 into single-bit binary:
+X0 | Y0 | Z0
+---|----|----
+0  | 0  | 0
+1  | 0  | 1
+0  | 1  | 1
+1  | 1  | 0
+
+Exercise: do the same for single-bit multiplication: write down the table of binary numbers for X0, Y0, and the binary representation of their product Z0, 
+and find the logical operation which matches. We say this operation implements single-bit multiplication.
+X0 | Y0 | Z0
+---|----|----
+0  | 0  | 0
+1  | 0  | 0
+0  | 1  | 0
+1  | 1  | 1
+The table corresponds to the AND operator.
+
+Exercise: Using A and B as the inputs, and OUT as the output, explain how this circuit acts as NAND(A,B); for each entry in the truth table, follow the explanation above. True is "high energy" and False is "low energy".
+Whenever either of the two gates is powered, the energy level is low, which corresponds to false.
+So, the energy level is only high when both gates are powered, which equals the situation when both variables are equal to zero.
+
+Exercise: show that every IPv4 can be represented by four 8bit unsigned integers, and that every 8bit unsigned integer is between 0 and 255
+An 8-bit integer can denote numbers from zero to 2^8 - 1, which equals the 0-255 range.
+
+Exercise: how many IPv4 addresses are there? Is it enough? Explain.
+The number of all possible combinations of the 8-bit unsigned integers is 4294967296 or 256^4. 
+Although this number is large, it has already been exceeded by the number of people on Earth as potential network users.
+This leads to network providers assigning their clients IP adresses that are unique inside a specific sub-network, but not globally.
+A client needs to make special arrangements in order to be assigned their own globally unique IP-address.
+
+Exercise: use ping in a terminal to resolve a domain name. Copy-paste the command you used, and the result.
+sudo ping habr.com
+[sudo] password for ruthenian8:
+PING habr.com (178.248.237.68) 56(84) bytes of data.
+64 bytes from 178.248.237.68 (178.248.237.68): icmp_seq=1 ttl=55 time=4.95 ms
+64 bytes from 178.248.237.68 (178.248.237.68): icmp_seq=2 ttl=55 time=4.75 ms
+64 bytes from 178.248.237.68 (178.248.237.68): icmp_seq=3 ttl=55 time=4.84 ms
+64 bytes from 178.248.237.68 (178.248.237.68): icmp_seq=4 ttl=55 time=4.70 ms
+
+Exercise: The Multipath TCP project aims to allow TCP packets to be split across multiple network links and reassembled at the destination. 
+For example, if you were uploading a 100 megabyte file to a server from your phone, it would allow you to send 75 megabytes by WiFi 
+and 25 megabytes by cellular automatically. How should the ratio be chosen if you want to minimise transmission time? Minimise cellular bandwidth use? Explain.
+1) cellular networks tend to have higher latency im comparison with WiFi. It means that the amount of data to be sent by the cellular network
+should be reduced for better performance. The maximal amount of 25 mb could be multiplied by some weight, a possible example of which is presented below:
+cellular latency / (WiFi Latency + cellular latency).
+This accounts for the network difference in terms of transmission time.
+2) Cellular bandwidth cannot be reduced to zero, as doing so would mean losing the advantage of the multipath TCP. A sufficient part of the data
+should still be sent through the cellular network. The weighted amount of data from the previous point could by meltiplied by an additional modifier
+that would let through even less data. This modifier could be calculated as follows:
+cellular bandwidth / WiFi bandwidth
+
+Exercise: UDP is popular for streaming media; explain why.
+UDP is popular for streaming media, since the cost of retransmitting any of the numerous packets that make up the media data is higher,
+than the cost of proceeding without it. For instance, it is troublesome to stop streaming music or video in case a negliglble part of it
+was lost during the transmission. It is possible to ignore such losses in the case of the UDP protocol.
+
+Exercise: Read the Wikipedia articles on multicast and anycast routing. 
+Why is anycast good for content delivery networks, and why is multicast good for live-streaming? What are some other uses for these?
+Anycast is good for content delivery networks, because in case of this methodology the routing path is chosen depending on the least latency and the least distance.
+This suits the CDNs, which aim to improve the response time by minimizing the distance between the client and the addressed server, 
+as this methodology allows the user request to be routed to the closest server in the network. 
+
+Multicast is good for live-streaming, since the addressed server only needs to produce a single stream of data to serve multiple clients, as copies of data for each
+of the clients would be created and routed to their destination by intermediary nodes. This diminishes the workload of the server in comparison with the case of multiple
+unicast connections. As a consequence, the server can easily process and cast large amounts of data, such as videos. 
