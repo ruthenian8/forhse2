@@ -1,0 +1,144 @@
+Exercise: build a list of all four-digit binary numbers, and compute the corresponding single-digit hexadecimal number
+0000 = 0
+0001 = 1
+0010 = 2
+0011 = 3
+0100 = 4
+0101 = 5
+0110 = 6
+0111 = 7
+1000 = 8
+1001 = 9
+1010 = A
+1011 = B
+1100 = C
+1101 = D
+1110 = E
+1111 = F
+
+Exercise: Pretend we use a naïve floating-point format with 5bit mantissa and 3bit exponent (base-2). 
+What is the smallest possible positive number representable? What is the largest positive number representable?
+The largest possible positive number is 15 * 10^3 == 15000
+The smallest possible positive number is 1 * 10^-3 == 0.001
+
+Exercise: use python to check this:
+from decimal import Decimal
+print(Decimal(0.1))
+0.1000000000000000055511151231257827021181583404541015625
+
+Exercise: what is the best approximation of 0.01?
+0.01000000000000000020816681711721685132943093776702880859375
+
+Exercise: use diagrams like the above to explain how to delete an item from a linked list.
+1) The pointer in x[0] is updated with the address of x[1]
+---------------       ---------------       ---------------
+| x[0] | next |--->-- | x[1] | next |--->---| x[2] | NULL | 
+---------------       ---------------       ---------------
+                      /
+           --------------
+           |  y  | next |
+	       --------------
+2) The pointer in y is terminated, so that y gets picked by the garbage collector
+---------------       ---------------       ---------------
+| x[0] | next |--->-- | x[1] | next |--->---| x[2] | NULL | 
+---------------       ---------------       ---------------
+                      
+           --------------
+           |  y  | next |
+	       --------------
+
+Exercise: assemble the numbers 1-10 into binary search trees which are 
+(a) maximally unbalanced to the left, 
+(b) balanced, 
+(c) one step from balanced.
+
+a)
+        9
+       8/
+      7/
+     6/
+    5/
+   4/
+  3/
+ 2/
+1/
+
+b)
+     5
+   3/ \8
+ 2/\4 7/\9
+1/   6/
+
+c)
+      4
+   2_/ \_8
+ 1/\3  6_/\_10
+      5/\7 9/
+
+
+Exercise: assemble a directed acyclic graph with the numbers 1-12 by strict divisibility: an edge from A to B if B/A is prime. 
+There are no directed cycles, but some nodes do have multiple paths to them. (These form cycles if you ignore the direction.) 
+Which ones? Explain how to decide if a number will have multiple paths to it.
+(See DAG.png)
+The node will be pointed to by multiple vertices if it is divisible by 6 or 10 or by any other product of prime numbers
+
+Exercise: Identify several maximal spanning trees in the divisibility graph from the previous exercise.
+(see DAG.png)
+
+Exercise: model acquaintance using a graph (vertices are people, an edge between A and B means A knows B). 
+Model it with a directed graph. How are these different?
+Most connections are bidirectional, so the graph has cycles by default (two nodes are connected by two vertices).
+People tend to have common acquaintances, so overall an acquaintance graph would tend to have many cycles on a larger scale.
+
+Exercise: this doesn't mean the file was transferred correctly; why not?
+The byte chunks that remain after the data loss can accidentally sum up to the same number with the unaffected chunks, although the probability
+of such a coincidence is small. For instance, if some nulls at the end of the first byte chunk were lost, the first chunk would map to a larger
+integer, but the changes to the second chunk could compensate for that (if it grew smaller), so that the overall sum wouldn't change.
+
+Exercise: do the same for files with "cat" and "cat2" instead of "hi" and "hi2"
+ruthenian8@LAPTOP-UOKE5B9L:~/tests$ echo cat > testfile; echo cat2 > testfile2;
+ruthenian8@LAPTOP-UOKE5B9L:~/tests$ md5sum testfile testfile2
+54b8617eca0e54c7d3c8e6732c6b687a  testfile
+4307ab44204de40235bad8c66cce0ae9  testfile2
+
+ruthenian8@LAPTOP-UOKE5B9L:~/tests$ sha1sum testfile testfile2
+8f6abfbac8c81b55f9005f7ec09e32d29e40eb40  testfile
+f476b8741936d51309437ffc5c87081c7b24ffb1  testfile2
+
+ruthenian8@LAPTOP-UOKE5B9L:~/tests$ sha512sum testfile testfile2
+644c7b649d31fc3c432534fb80d71a3a5e2b3eb65e737eb15c6e6af96e40c8ee3dcb55fd172e263783e62f8d94f5c99e12a016d581b860700640e45c9c1b87b3  testfile
+84c308d32247eb3b590ff27b47d5018551dd6ad3e696b6d61b1e70fed7570522812a2c3353e93db38728f4a10de5156996b144d2b150f1ffe92ba7a301b5bfe2  testfile2
+
+b2sum testfile testfile2
+0247169dd9d258599e4a4327067f74f3dbd7db0e6d623954212738e62c233b410141a1eab4130073b99a8959e3d52f70da7402ae8d94ca6333126ec3b4e0bca7  testfile
+48d92c152ff4c58a948d75f7aaba6ccaf00f8f9beb78e3399fe0f325e758af657c07eb2d83a753f3fe16074b149f46390abce8673c7477f75aae99427c9defa7  testfile2
+
+Exercise: implement the Caesar cipher in python, which advances each letter of 'M' by 'SEC = n': enc(1, "a") = "b", etc.
+class CaesarCipher():
+    def __init__(self,
+                 abc:str="ABCDEFGHIGKLMNOPQRSTUVWXYZ"):
+        self.len = len(abc)
+        self.all_dict = {}
+        self.reverse = {}
+        for num, let in enumerate(abc):
+            self.all_dict[num + 1] = let
+            self.reverse[let] = num + 1
+            
+    def enc(self, SEC:int, txt:str):
+        assert type(SEC) == int and type(txt) == str
+        numbers = list()
+        for let in txt:
+            number = self.reverse.get(let, None)
+            if number is not None:
+                number += SEC
+                if number > self.len:
+                    number -= self.len
+                numbers.append(number)
+        output = []
+        for num in numbers:
+            output.append(self.all_dict[num])
+        return "".join(output)
+
+CC = CaesarCipher()
+CC.enc(1, "ABRACADABRA")
+> 'BCSBDBEBCSB'
