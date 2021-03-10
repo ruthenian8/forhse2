@@ -1,0 +1,106 @@
+Exercise: Compare the output of ls vs ls -l and ls -a; describe how they are similar, and how they are different.
+ls -l forces the ls to use the long listing format, which makes it display not only the file names, but also the file sizes in kilobytes
+and the creation/update dates. Like the regular ls, ls -l ignores the file names that start with a dot.
+ls -a makes the program display the files, the names of which begin with a dot. Inside a linux-like system it means, that not only the user-created
+files, but also the system-created files and directories will be included in the output. Unlike ls -l, ls -a does not change the format of the output, 
+so no additional information gets provided.
+
+Explain pushd and popd; what data structure represents your directory history? Give an example of using them to organize a folder with music
+The directory history is represented by a stack. A stack is a data structure which combines several objects into a row, like the linked list does.
+The difference from the linked list consists in the fact, that normally it is only the last or the "upper" element of the stack that the user can
+either add or pop (get and remove). This structure is useful for organizing sequences, like the directory history.
+Since the pushd and popd support setting and getting elements at arbitrary positions in the stack, they can be used to implement a "straightforward" and 
+a "shuffled" manner of traversing a music folder (a directory that includes several other directories, like the albums). 
+It means that for iterating music directories in a shuffled way the current directory should always
+be pushed to a random position in the stack, while always popping the upper directory.
+
+Exercise: Draw a partial tree of your filesystem, starting from the children of your home directory. 
+Include ancestors of your home directory, and siblings of those ancestors. Exclude files, just show directories.
+
+|bin/  
+|boot/  
+|dev/  
+|etc/  
+|home/
+|	|ruthenian8/
+|	|	|.cache/
+|	|	|.config/
+|	|	|.gnupg/
+|	|	|.local/
+|	|	|projects/
+|	|	|.ssh/
+|	|	|tests/
+|	|root/
+|init/
+|lib/  
+|lib64/  
+|lost+found/  
+|media/  
+|mnt/
+|opt/  
+|proc/  
+|root/  
+|run/  
+|sbin/  
+|srv/  
+|sys/  
+|tmp/  
+|usr/  
+|var/
+
+Exercise: Write a shell script that asks the user for their name, and greets them. Sample interaction:
+#!/bin/bash
+while [ true ];
+do
+echo "what is your name?"
+read -r key
+if [ -n "$key" ]
+then
+echo "hello $key"
+break
+exit 0
+fi
+done;
+
+Exercise: Write a shell script that performs "ROT13" (Caesar cipher with shift 13.) For English, encryption and decryption are the same! (Explain why!)
+#!/bin/bash
+if [ $1 ];
+then
+string="$1"
+var1=( {a..z} )
+var2=( {n..z} {a..m} )
+output=""
+for (( i = 0; i < ${#string}; ++i ));
+do
+        ch="${string:i:1}"
+        for n in "${!var1[@]}"; do
+        if [[ "${var1[$n]}" = "${ch}" ]]; then
+        var3="${var2[$n]}";
+        output="$output$var3"
+        fi
+        done;
+done;
+echo "$output";
+unset var1 var2 var3 output;
+exit 0;
+else
+echo "no argument given";
+exit 0;
+fi
+
+Encryption and decryption by 13 are the same in English, since English is a satanic language (no) and since its alphabet contains 26 letters, 
+which (yes) makes encryption and decryption symmetrical.
+
+Exercise: Write a shell function that prints "hidden" if the current directory starts with a dot ".", 
+or if any parent starts with a dot. (Files and directories that start with dots are considered "hidden" on many UNIX-like systems.)
+#!/bin/bash
+DIR=`pwd`
+echo $DIR
+if [[ $DIR == *'/.'* ]];
+then
+echo "hidden"
+exit 0
+else
+echo "not hidden"
+exit 0
+fi
