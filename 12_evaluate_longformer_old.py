@@ -28,12 +28,7 @@ class LongformerDatasetNew(Dataset):
         if not os.path.isdir(saved_dir):
             os.makedirs(saved_dir)
         dataset_path = os.path.join(saved_dir, f"longformer_dataset.{split}.pkl")
-        if os.path.exists(dataset_path):
-            with open(dataset_path, "rb") as f:
-                self.dataset = pickle.load(f)
-                print(f"Dataset loaded from {dataset_path}")
-        else:
-            self.create_dataset(split, dataset_path)
+        self.create_dataset(split, dataset_path)
 
         if shuffle:
             random.shuffle(self.dataset)
