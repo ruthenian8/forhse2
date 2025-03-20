@@ -1,5 +1,5 @@
 import os
-
+import pickle
 import evaluate
 import torch
 from accelerate import Accelerator
@@ -8,7 +8,7 @@ from safetensors.torch import load_file
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, LongformerForSequenceClassification
 
-from tos.tos_dataset import LongformerDataCollator, LongformerDataset
+from tos.tos_dataset import LongformerDataCollator, LongformerDataset, ToSDataset
 from tos.tos_models import LongformerWithMotifsForSequenceClassification
 
 
@@ -54,7 +54,7 @@ def evaluate_longformer(testset_name: str, model_path: str, add_motif: bool):
     test_dataset = LongFormerDatasetNew(split=testset_name, shuffle=False, saved_dir="data")
     data_loader = DataLoader(
         test_dataset,
-        batch_size=32,
+        batch_size=8,
         collate_fn=LongformerDataCollator(
             tokenizer=tokenizer, padding="longest", add_motif=add_motif
         ),
